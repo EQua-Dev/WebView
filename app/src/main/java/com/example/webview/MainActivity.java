@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
@@ -45,9 +46,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         WebSettings webSettings = mWebView.getSettings();
+//        we ensure that the JS functionality in the website are also applied in the app
         webSettings.setJavaScriptEnabled(true);
+//        the website to be loaded is input here
         mWebView.loadUrl("https://starthub.com.ng");
+//        we ensure that web pages clicked on the website does not  open in a phone browser
+        mWebView.setWebViewClient(new WebViewClient());
 
+    }
+
+//    we override this method to ensure that the app is not closed when the back button is pressed
+    @Override
+    public void onBackPressed() {
+//        if the website can go back (ie; has a previous page)
+        if (mWebView.canGoBack()){
+//            the app goes back to the previous web page
+            mWebView.goBack();
+        }else {
+//            else the app is closed
+            super.onBackPressed();
+        }
     }
 }
 
